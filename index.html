@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <link rel="icon" href="https://i.postimg.cc/7ZJ19m3W/My-profile.jpg" type="image/x-icon" />
+  <title>Huzaifa Moin – Portfolio</title>
+  <style>
+    /* ---------- Base ---------- */
+    :root{
+      --bg-1:#121212;
+      --bg-2:#1E1E1E;
+      --panel:#1B1F24;
+      --muted:#aaa;
+      --text:#E0E0E0;
+      --accent: #00bcd4;
+    }
+    *{box-sizing:border-box}
+    body {
+      margin:0;
+      font-family: "Poppins", Arial, sans-serif;
+      background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{opacity:0.9}
+
+    /* ---------- Header (centered nav) ---------- */
+    header {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      background:#222;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:15px 20px;
+      z-index:1000;
+      transition: all .25s ease;
+      backdrop-filter: blur(4px);
+    }
+    header.scrolled { padding:8px 20px; box-shadow:0 6px 18px rgba(0,0,0,.5); }
+    header nav { display:flex; gap:22px; align-items:center; font-weight:600; }
+    header nav a { color:var(--text); padding:6px 10px; border-radius:8px; transition: background .18s, transform .18s; }
+    header nav a:hover { background: rgba(255,255,255,.03); transform: translateY(-2px); color:var(--accent); }
+
+    /* show small profile in header after scroll */
+    header .mini-profile { display:none; width:36px; height:36px; border-radius:8px; object-fit:cover; margin-right:10px; }
+    header.scrolled .mini-profile { display:inline-block; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      position:relative;
+      padding:0 20px;
+      overflow:hidden;
+      background: linear-gradient(135deg, rgba(0,0,0,.3) 0%, rgba(0,0,0,.55) 100%);
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:0;
+      background: url("https://i.postimg.cc/7ZJ19m3W/My-profile.jpg") center/cover no-repeat;
+      filter: blur(0px) saturate(.95) brightness(.6);
+      z-index:0;
+    }
+    .hero-content{
+      position:relative; z-index:2;
+      max-width:980px;
+      padding:48px;
+      border-radius:16px;
+    }
+    .hero h1{ font-size:48px; margin:0 0 10px; letter-spacing:-0.5px; color:#fff; }
+    .hero .subtitle{ color:var(--accent); font-weight:700; margin-bottom:18px; font-size:18px; }
+    .hero p{ color:var(--muted); font-size:18px; max-width:800px; margin:0 auto 22px; }
+    .hero .hero-cta{ display:flex; gap:14px; justify-content:center; margin-top:8px; flex-wrap:wrap; }
+    .btn {
+      display:inline-block; padding:12px 22px; border-radius:999px; font-weight:700; cursor:pointer; border:none;
+      transition: transform .14s ease, background .14s ease;
+    }
+    .btn-primary { background:#fff; color:#111; }
+    .btn-primary:hover{ background:var(--accent); color:#fff; transform: translateY(-3px); }
+    .btn-outline { background:transparent; border:2px solid var(--accent); color:var(--accent); }
+    .btn-outline:hover{ background:var(--accent); color:#111; transform: translateY(-3px); }
+
+    /* ---------- Projects (new) ---------- */
+    .section { max-width:1100px; margin:64px auto; padding:0 20px; }
+    .section h2 { font-size:28px; color:var(--accent); margin-bottom:18px; }
+    .projects-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+    .project-card {
+      background:var(--bg-2);
+      border-radius:10px;
+      overflow:hidden;
+      cursor:pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      transition: transform .18s ease, box-shadow .18s ease;
+      display:flex; flex-direction:column;
+    }
+    .project-card:hover{ transform:translateY(-6px); box-shadow: 0 14px 32px rgba(0,0,0,0.5); }
+    .project-thumb { width:100%; height:160px; object-fit:cover; display:block; }
+    .project-body { padding:14px 16px; flex:1; display:flex; flex-direction:column; gap:8px; }
+    .project-body h4{ margin:0; font-size:16px; color:#fff; }
+    .project-body p{ margin:0; color:var(--muted); font-size:13.5px; flex:1; }
+
+    /* ---------- Modal ---------- */
+    .modal {
+      position:fixed; inset:0; background:rgba(0,0,0,.86); display:none;
+      align-items:center; justify-content:center; z-index:2200; padding:24px;
+    }
+    .modal.open { display:flex; }
+    .modal-panel {
+      width:100%; max-width:820px; background:var(--panel); border-radius:12px; overflow:hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: modalIn .18s ease;
+    }
+    @keyframes modalIn { from{ transform: translateY(8px) scale(.99); opacity:0 } to { transform:none; opacity:1 } }
+    .modal-body { display:flex; gap:18px; padding:18px; }
+    .modal-img { width:44%; object-fit:cover; border-radius:8px; }
+    .modal-content { width:56%; display:flex; flex-direction:column; gap:12px; }
+    .modal-content h3{ margin:0; color:#fff; }
+    .modal-content p{ margin:0; color:var(--muted); font-size:14px; }
+    .modal-actions { margin-top:auto; display:flex; gap:10px; align-items:center; }
+    .modal .close-btn { position:absolute; top:12px; right:12px; background:transparent; border:none; color:var(--muted); font-size:20px; cursor:pointer; }
+
+    /* ---------- Certificates (kept as requested but slightly styled) ---------- */
+    .certificates {
+      padding:60px 20px; text-align:center; background:transparent;
+    }
+    .cert-grid {
+      display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:18px; max-width:1000px; margin:20px auto 0;
+    }
+    .cert-card {
+      background:var(--bg-2); padding:18px; border-radius:12px; transition: transform .18s, box-shadow .18s;
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+    }
+    .cert-card img { width:60px; height:60px; object-fit:contain; }
+    .cert-card p { margin:0; color:var(--muted); font-size:14px; text-align:center; }
+
+    /* ---------- Contact layout (left summary, right contact) ---------- */
+    .contact-section { max-width:1200px; margin:60px auto; padding:0 20px; display:flex; gap:28px; flex-wrap:wrap; }
+    .contact-left, .contact-right { background:transparent; padding:18px; border-radius:10px; min-width:280px; }
+    .contact-left { flex:1.2; }
+    .contact-right { flex:0.8; display:flex; flex-direction:column; gap:8px; }
+    .socials a{ display:block; color:var(--accent); margin-bottom:8px; }
+
+    /* ---------- Footer ---------- */
+    footer { text-align:center; padding:26px 12px; color:var(--muted); border-top:1px solid rgba(255,255,255,.03); margin-top:48px; }
+
+    /* responsive tweaks */
+    @media (max-width:900px){
+      .modal-body{ flex-direction:column; }
+      .modal-img, .modal-content{ width:100%; }
+      .hero h1{ font-size:36px }
+      header nav{ gap:12px; }
+    }
+    /* ===== EXPERIENCE SECTION ===== */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.experience-card {
+  background: #1e1e2f;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease;
+}
+
+.experience-card:hover {
+  transform: translateY(-5px);
+}
+
+.experience-card h3 {
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.experience-card h4 {
+  font-size: 1rem;
+  color: #bbb;
+  margin-bottom: 0.3rem;
+}
+
+.experience-card .exp-date {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.8rem;
+}
+
+.experience-card ul {
+  margin-left: 1rem;
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+.experience-card ul li {
+  margin-bottom: 0.5rem;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="page-header">
+    <nav>
+      <img src="https://i.postimg.cc/7ZJ19m3W/My-profile.jpg" alt="mini" class="mini-profile" />
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" aria-label="hero">
+    <div class="hero-content">
+      <h1>Hi — I'm Huzaifa Moin</h1>
+      <div class="subtitle">Data Management Assistant</div>
+      <p>I turn data into clear insights and business outcomes using SQL, Power BI, Python, and Excel — dashboards, forecasts, and anomaly detection that decision-makers trust.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">View My Projects</button>
+        <a class="btn btn-outline" href="https://drive.google.com/file/d/1eb0yxErnNwIFiJrw53BaiwasEmdPJzH9/view?usp=sharing" target="_blank" rel="noreferrer">Download Resume</a>
+      </div>
+    </div>
+  </section>
+<!-- ===== EXPERIENCE SECTION ===== -->
+<section id="experience" class="section">
+  <h2 class="section-title">Experience</h2>
+  <div class="experience-list">
+    
+    <div class="experience-card">
+      <h3>Data Management Assistant</h3>
+      <h4>Fazaia Degree College Faisal</h4>
+      <p class="exp-date">Sep 2025 – Present</p>
+      <ul>
+        <li>Managed academic and administrative data, ensuring accuracy and consistency across records.</li>
+        <li>Automated reporting workflows, improving efficiency of data retrieval and analysis.</li>
+        <li>Supported staff with dashboards and performance reports for decision-making.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+  <!-- Projects (ADDED) -->
+  <section id="projects" class="section" aria-label="projects">
+    <h2>Projects</h2>
+    <div class="projects-grid" id="projectsGrid">
+      <!-- Project cards are rendered by JS (keeps rest of file unchanged) -->
+    </div>
+  </section>
+
+  <!-- Certificates (kept layout change you asked for) -->
+  <section class="certificates" id="certs">
+    <h2>Certifications</h2>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <img src="https://img.icons8.com/color/96/google-logo.png" alt="Google">
+        <p>Google Data Analytics (Mar 2025)<br><a href="https://coursera.org/share/4335d798d18aefc7bea346d7bdbd77f3" target="_blank">View Certificate</a></p>
+      </div>
+      <div class="cert-card">
+        <img src="https://img.icons8.com/color/96/google-logo.png" alt="Google">
+        <p>Google Business Intelligence (Mar 2025)<br><a href="https://coursera.org/share/dc387929a10d91ff8b76db810a619068" target="_blank">View Certificate</a></p>
+      </div>
+      <div class="cert-card">
+        <img src="https://i.postimg.cc/hj1DrHSD/python.png" alt="IBM/Python">
+        <p>IBM Python for Data Analytics (Jun 2025)<br><a href="https://coursera.org/share/7db1e86071b45ea548409eefa840c5dc" target="_blank">View Certificate</a></p>
+      </div>
+      <div class="cert-card">
+        <img src="https://i.postimg.cc/gjKxxxwK/blob.png" alt="Credly">
+        <p>Credly Digital Badge (IBM)<br><a href="https://www.credly.com/badges/769bbcc3-558e-4dd4-bf5b-6892f0a9c724/public_url" target="_blank">View Badge</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact: left summary, right contact (unchanged except added projects above) -->
+  <section id="contact" class="contact-section" aria-label="contact">
+    <div class="contact-left">
+      <h2>About Me</h2>
+      <p>I help organizations turn raw data into actionable insights. Using <strong>Power BI, SQL, Excel, and Python</strong>, I’ve solved problems such as:</p>
+      <ul>
+        <li>Detecting fraudulent transactions in large SQL datasets</li>
+        <li>Building forecasting models and distribution planning dashboards</li>
+        <li>Designing performance & HSE dashboards to track KPIs and improve compliance</li>
+      </ul>
+      <p>My focus: clean visualizations, reproducible pipelines, and delivering measurable business impact.</p>
+    </div>
+
+  <div class="contact-right">
+  <h2>Contact Me</h2>
+  <div class="socials">
+    <a href="mailto:huzaifamoin02@gmail.com"><i class="fa-solid fa-envelope"></i> huzaifamoin02@gmail.com</a>
+    <a href="https://www.linkedin.com/in/huzaifa-moin/" target="_blank"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+    <a href="https://github.com/Huzaifamoin02" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+  </div>
+</div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Huzaifa Moin. All rights reserved.
+  </footer>
+
+  <!-- Project Modal (single modal used for all projects) -->
+  <div id="projectModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="close-btn" onclick="closeProjectModal()" aria-label="Close">✕</button>
+      <div class="modal-body">
+        <img id="modalImage" class="modal-img" src="" alt="Project thumbnail">
+        <div class="modal-content">
+          <h3 id="modalTitle"></h3>
+          <p id="modalDesc"></p>
+          <div class="modal-actions">
+            <a id="modalViewBtn" class="btn btn-primary" href="#" target="_blank" style="display:none">View Project</a>
+            <button class="btn btn-outline" onclick="closeProjectModal()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Header scroll mini-profile toggle */
+    const header = document.getElementById('page-header');
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 120) header.classList.add('scrolled');
+      else header.classList.remove('scrolled');
+    });
+
+    /* Projects array (using the thumbnails and descriptions you provided) */
+    const projects = [
+      {
+        title: "Cover Installation Progress Dashboard | Project Management (Sep 2025)",
+        thumbnail: "https://i.postimg.cc/SsRxLt8X/BYD.png",
+        details: "Visualized progress of cover installation milestones in project management. Shows milestones by zone, completion %, and highlights delays so project managers can act quickly."
+      },
+      {
+        title: "Budget Overview Dashboard | Education Sector (Sep 2025)",
+        thumbnail: "https://i.postimg.cc/254KczQM/Screenshot-2025-08-30-143023.png",
+        details: "Provided an overview of budget allocation and spending for the education sector. Visualizes allocation vs spend, flags overages, and helps ensure financial targets are met."
+      },
+      {
+        title: "Credit Card Fraud Analysis | SQL (Mar 2025)",
+        thumbnail: "https://i.postimg.cc/rspxrJyg/image.png",
+        details: "Analyzed 500,000+ transactions in SQL to detect fraud patterns. Identified high-risk segments and found customers above 60 were most vulnerable — enabling targeted protections.",
+        link: "https://www.datacamp.com/datalab/w/f6ed2b37-9d27-41b7-9346-44b732731754/edit"
+      },
+      {
+        title: "Performance Evaluation Dashboard | Power BI (Jul 2025)",
+        thumbnail: "https://i.postimg.cc/TYggWpfz/Dashboard.png",
+        details: "Tracked employee performance across multiple metrics. Integrated HR and operational data sources to give management a consolidated view of KPIs and improvement areas."
+      },
+      {
+        title: "HSE Projects Dashboard | Power BI (Jul 2025)",
+        thumbnail: "https://i.postimg.cc/mDk7cjgj/stream1-vs-stream2.png",
+        details: "Tracks Health, Safety & Environmental project performance and compliance. Visualizes incidents, audit scores, and corrective actions to maintain safety standards."
+      },
+      {
+        title: "Case Management & Performance Tracking Dashboard | Power BI (Jul 2025)",
+        thumbnail: "https://i.postimg.cc/TPXb9GYK/Screenshot-2025-08-03-171052.png",
+        details: "Monitors case volumes, resolution times, and backlog aging. Helps teams prioritize cases and reduce average resolution times through data-driven insights."
+      },
+      {
+        title: "Product Distribution & Forecast Dashboard | Power BI (Aug 2025)",
+        thumbnail: "https://i.postimg.cc/TPXb9GYK/Screenshot-2025-08-03-171052.png",
+        details: "Combines historical sales and distribution data to forecast demand and optimize inventory distribution — reducing stockouts and excess inventory."
+      },
+      {
+        title: "Tournament Strategy Dashboard | Power BI (Aug 2025)",
+        thumbnail: "https://i.postimg.cc/ryYtH5wX/Screenshot-2025-08-16-234503.png",
+        details: "Analyzes player/team metrics and match outcomes to recommend strategies. Visualizes performance trends and helps refine tactics for better results."
+      },
+      {
+        title: "Vulnerability Compliance Dashboard | Cybersecurity (Sep 2025)",
+        thumbnail: "https://i.postimg.cc/cLG6qhqj/image.png",
+        details: "Tracks SLA compliance in vulnerability management, showing remediation timelines and compliance rates. Helped improve compliance from 80% to 86% by surfacing overdue items."
+      },
+      {
+        title: "Employee Performance Dashboard | HR & Sales Analytics (Sep 2025)",
+        thumbnail: "https://i.postimg.cc/TYggWpfz/Dashboard.png",
+        details: "Integrates HR and sales data to analyze employee performance, identify top performers, and align incentives with measurable outcomes."
+      }
+    ];
+
+    /* Render project cards */
+    const grid = document.getElementById('projectsGrid');
+    projects.forEach((p, idx) => {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+      card.innerHTML = `
+        <img class="project-thumb" src="${p.thumbnail}" alt="${escapeHtml(p.title)}" />
+        <div class="project-body">
+          <h4>${escapeHtml(p.title)}</h4>
+          <p>${escapeHtml(p.details).slice(0,120)}${p.details.length>120 ? '…' : ''}</p>
+        </div>
+      `;
+      card.addEventListener('click', () => openProjectModal(idx));
+      grid.appendChild(card);
+    });
+
+    /* Modal logic */
+    const modal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImg = document.getElementById('modalImage');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalViewBtn = document.getElementById('modalViewBtn');
+
+    function openProjectModal(index){
+      const p = projects[index];
+      modalTitle.textContent = p.title;
+      modalImg.src = p.thumbnail;
+      modalImg.alt = p.title;
+      modalDesc.textContent = p.details;
+      if(p.link){
+        modalViewBtn.style.display = 'inline-block';
+        modalViewBtn.href = p.link;
+      } else {
+        modalViewBtn.style.display = 'none';
+      }
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal(){
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    // close modal on backdrop click
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal) closeProjectModal();
+    });
+
+    // small helper to avoid injection when building innerHTML
+    function escapeHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+    
+  </script>
+</body>
+</html>
