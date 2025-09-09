@@ -133,18 +133,46 @@
     .modal .close-btn { position:absolute; top:12px; right:12px; background:transparent; border:none; color:var(--muted); font-size:20px; cursor:pointer; }
 
     /* ---------- Certificates (kept as requested but slightly styled) ---------- */
-    .certificates {
-      padding:60px 20px; text-align:center; background:transparent;
-    }
-    .cert-grid {
-      display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:18px; max-width:1000px; margin:20px auto 0;
-    }
-    .cert-card {
-      background:var(--bg-2); padding:18px; border-radius:12px; transition: transform .18s, box-shadow .18s;
-      display:flex; flex-direction:column; align-items:center; gap:10px;
-    }
-    .cert-card img { width:60px; height:60px; object-fit:contain; }
-    .cert-card p { margin:0; color:var(--muted); font-size:14px; text-align:center; }
+    /* ---------- Certificates (kept as requested but slightly styled) ---------- */
+.certificates {
+  padding:60px 20px; 
+  text-align:center; 
+  background:transparent;
+}
+.cert-grid {
+  display:grid; 
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); 
+  gap:18px; 
+  max-width:1000px; 
+  margin:20px auto 0;
+}
+.cert-card {
+  background:var(--bg-2); 
+  padding:18px; 
+  border-radius:12px; 
+  transition: transform .18s, box-shadow .18s;
+  display:flex; 
+  flex-direction:column; 
+  align-items:center; 
+  gap:10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25); /* Added shadow */
+}
+.cert-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35); /* Stronger shadow on hover */
+}
+.cert-card img { 
+  width:60px; 
+  height:60px; 
+  object-fit:contain; 
+}
+.cert-card p { 
+  margin:0; 
+  color:var(--muted); 
+  font-size:14px; 
+  text-align:center; 
+}
+
 
     /* ---------- Contact layout (left summary, right contact) ---------- */
     .contact-section { max-width:1200px; margin:60px auto; padding:0 20px; display:flex; gap:28px; flex-wrap:wrap; }
@@ -454,6 +482,7 @@
   </script>
 </body>
 </html>
+
 
 
 
