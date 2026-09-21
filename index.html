@@ -45,8 +45,10 @@
   rel="icon"
   href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 fill=%22%2323251f%22/><text x=%2232%22 y=%2242%22 text-anchor=%22middle%22 font-family=%22Arial,sans-serif%22 font-size=%2228%22 font-weight=%22700%22 letter-spacing=%22-2%22 fill=%22%23f1ef68%22>hm.</text></svg>"
 >
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://app.powerbi.com">
+<link rel="dns-prefetch" href="https://app.powerbi.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
     rel="stylesheet"
@@ -1311,8 +1313,25 @@
       padding: clamp(16px, 4vw, 35px);
     }
 
-    .dialog-preview .project-media img {
+        .dialog-preview .project-media img {
       filter: none;
+    }
+
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .iframe-loading {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--paper);
     }
 
     .dialog-body {
@@ -1702,7 +1721,24 @@
         transform: none;
       }
     }
+    .iframe-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.iframe-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--paper);
+}
   </style>
+  
 </head>
 
 <body id="top">
@@ -2270,7 +2306,7 @@
       },
       {
   title: "HISD Budget Dashboard",
-  thumb: "PLACEHOLDER_IMAGE_LINK",
+  thumb: "hisd.png",
   tags: ["Finance"],
   embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiMjc5NDFmYTItMDE3OS00ZGM1LWE0NDItZDgwYjg4OTc2NTA4IiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
   tools: ["Power BI"],
@@ -2443,44 +2479,50 @@
       }
     }
 
-    function createPreview(project, lazy = true) {
+    function createPreview(project, options = {}) {
+  const { live = false } = options;
   const media = createElement("span", "project-media");
 
-  if (project.embedUrl) {
+  if (live && project.embedUrl) {
+    const wrapper = createElement("span", "iframe-wrapper");
+    const spinner = createElement("span", "iframe-loading", "Loading report…");
+
     const iframe = document.createElement("iframe");
     iframe.src = project.embedUrl;
     iframe.title = project.title + " interactive dashboard";
-    iframe.loading = lazy ? "lazy" : "eager";
+    iframe.loading = "eager";
     iframe.setAttribute("frameborder", "0");
     iframe.allowFullscreen = true;
     iframe.style.width = "100%";
     iframe.style.height = "100%";
     iframe.style.border = "0";
-    media.append(iframe);
+    iframe.addEventListener("load", () => spinner.remove(), { once: true });
+
+    wrapper.append(spinner, iframe);
+    media.append(wrapper);
     return media;
   }
 
   const image = document.createElement("img");
+  image.alt = project.title + " preview";
+  image.loading = "lazy";
+  image.decoding = "async";
+  image.width = 1440;
+  image.height = 900;
 
-      image.alt = project.title + " preview";
-      image.loading = lazy ? "lazy" : "eager";
-      image.decoding = "async";
-      image.width = 1440;
-      image.height = 900;
+  const fallback = createElement("span", "image-fallback");
+  fallback.hidden = true;
+  fallback.append(
+    createElement("strong", "", project.title),
+    createElement("span", "", "Dashboard preview unavailable")
+  );
 
-      const fallback = createElement("span", "image-fallback");
-      fallback.hidden = true;
-      fallback.append(
-        createElement("strong", "", project.title),
-        createElement("span", "", "Dashboard preview unavailable")
-      );
+  media.append(image, fallback);
+  image.src = project.thumb;
+  attachImageFallback(image);
 
-      media.append(image, fallback);
-      image.src = project.thumb;
-      attachImageFallback(image);
-
-      return media;
-    }
+  return media;
+}
 
     // Native dialog provides modal focus containment and Escape handling.
     const dialog = document.getElementById("projectDialog");
@@ -2497,8 +2539,8 @@
       document.getElementById("dialogTags").textContent =
         [...project.tools, project.category, project.year].join(" / ");
 
-      document.getElementById("dialogPreview").replaceChildren(
-        createPreview(project, false)
+         document.getElementById("dialogPreview").replaceChildren(
+        createPreview(project, { live: true })
       );
 
       const actions = document.getElementById("dialogActions");
