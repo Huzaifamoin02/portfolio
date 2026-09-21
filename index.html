@@ -2243,10 +2243,36 @@
     "use strict";
 
     const projects = [
+    {
+        title: "Sales Funnel Dashboard",
+        thumb: "KPI.jpg",
+        tags: ["Sales"],
+        embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiODE3M2ZiZjctMjM3YS00MTRmLWEyYmMtODMyMjcwNzViOWNlIiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
+        tools: ["Power BI"],
+        category: "Sales performance",
+        year: "2026",
+        group: "selected",
+        summary: "From first conversation to closing, a clearer view of the sales pipeline.",
+        description:
+          "Conversations-to-offers-to-closings funnel with MTD stats, rolling 90-day closings, daily trend lines, and owner-split breakdowns across channels."
+      },
       {
-        title: "HR Insights Dashboard",
-        thumb: "HR.jpg",
-        tags: ["HR"],
+        title: "Cover Installation Progress Dashboard",
+        thumb: "https://i.postimg.cc/SsRxLt8X/BYD.png",
+        tags: ["Operations"],
+        embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiODc4MDQ0ZDctMTE5MC00MjVhLWE4MjctODg3YzE0MjE1NjhiIiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
+        tools: ["Power BI"],
+        category: "Project management",
+        year: "2025",
+        group: "selected",
+        description:
+          "Zone-by-zone installation tracking with daily achievement trends, overall progress percentage, and variance analysis to identify bottlenecks."
+      },
+      {
+  title: "HR Insights Dashboard",
+  thumb: "HR.jpg",
+  embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiZjhjNDBiMWYtOTIzZC00OThlLWFhODMtNDU1NDI5NzQ5Y2VjIiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
+  tags: ["HR"],
         tools: ["Power BI"],
         category: "People analytics",
         year: "2026",
@@ -2259,6 +2285,7 @@
         title: "Healthcare Operations Dashboard",
         thumb: "https://i.postimg.cc/TPXb9GYK/Screenshot-2025-08-03-171052.png",
         tags: ["Healthcare"],
+        embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiYWE4MjUyOGQtYmI1NS00ZmNlLWIwZDgtYzVlOGU3OGZjMjQwIiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
         tools: ["Power BI"],
         category: "Healthcare",
         year: "2025",
@@ -2270,6 +2297,7 @@
       {
         title: "Training Evolution",
         thumb: "Stravia.jpg",
+        embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiZWEzY2EzMWMtZTFmNi00MGU0LWExZDAtZTY3ZjliY2E5MzQ0IiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
         tags: ["Operations"],
         tools: ["Power BI"],
         category: "Athlete intelligence",
@@ -2279,22 +2307,12 @@
         description:
           "Multi-year fitness tracking dashboard covering training volume trends, heart rate zones, time-of-day patterns, and activity mix across 2K+ activities and 53K+ km."
       },
-      {
-        title: "Sales Funnel Dashboard",
-        thumb: "KPI.jpg",
-        tags: ["Sales"],
-        tools: ["Power BI"],
-        category: "Sales performance",
-        year: "2026",
-        group: "selected",
-        summary: "From first conversation to closing, a clearer view of the sales pipeline.",
-        description:
-          "Conversations-to-offers-to-closings funnel with MTD stats, rolling 90-day closings, daily trend lines, and owner-split breakdowns across channels."
-      },
+      
       {
         title: "Workforce Productivity Dashboard",
         thumb: "operations.jpg",
         tags: ["Operations", "HR"],
+        embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiZWZlYzc5MDktNTY1Ny00NDljLWExMTgtNjNlMWIwOTRiN2NjIiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
         tools: ["Power BI"],
         category: "Workforce operations",
         year: "2026",
@@ -2307,6 +2325,7 @@
         title: "SLA Compliance Dashboard",
         thumb: "SLA.jpg",
         tags: ["Operations"],
+        embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiMmFlNTMyNzktZmRkOC00ZDQxLTkwY2MtNTRjZWYxN2VlMjVkIiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
         tools: ["Power BI"],
         category: "Service operations",
         year: "2026",
@@ -2319,6 +2338,7 @@
         title: "Item Supply Performance Dashboard",
         thumb: "item_supply.jpg",
         tags: ["Operations"],
+        embedUrl: "https://app.powerbi.com/view?r=eyJrIjoiNTVkMzU0NWYtYzU5Ni00ZjBmLTkzNWYtNGU1ZDgzZWZmODc0IiwidCI6IjdmNTA5OTJiLWZlMGEtNDkzNi1hMzcyLTRkYTA4YmYxN2IwZSIsImMiOjZ9",
         tools: ["Power BI"],
         category: "Supply chain",
         year: "2026",
@@ -2327,17 +2347,7 @@
         description:
           "52K+ item health scoring across supply chains, including healthy, at-risk, and watchlist items, diamond quantity by supply chain, root cause analysis, and a granular summary table."
       },
-      {
-        title: "Cover Installation Progress Dashboard",
-        thumb: "https://i.postimg.cc/SsRxLt8X/BYD.png",
-        tags: ["Operations"],
-        tools: ["Power BI"],
-        category: "Project management",
-        year: "2025",
-        group: "archive",
-        description:
-          "Zone-by-zone installation tracking with daily achievement trends, overall progress percentage, and variance analysis to identify bottlenecks."
-      },
+      
       {
         title: "Budget Overview Dashboard",
         thumb: "https://i.postimg.cc/254KczQM/Screenshot-2025-08-30-143023.png",
@@ -2422,8 +2432,23 @@
     }
 
     function createPreview(project, lazy = true) {
-      const media = createElement("span", "project-media");
-      const image = document.createElement("img");
+  const media = createElement("span", "project-media");
+
+  if (project.embedUrl) {
+    const iframe = document.createElement("iframe");
+    iframe.src = project.embedUrl;
+    iframe.title = project.title + " interactive dashboard";
+    iframe.loading = lazy ? "lazy" : "eager";
+    iframe.setAttribute("frameborder", "0");
+    iframe.allowFullscreen = true;
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+    iframe.style.border = "0";
+    media.append(iframe);
+    return media;
+  }
+
+  const image = document.createElement("img");
 
       image.alt = project.title + " preview";
       image.loading = lazy ? "lazy" : "eager";
